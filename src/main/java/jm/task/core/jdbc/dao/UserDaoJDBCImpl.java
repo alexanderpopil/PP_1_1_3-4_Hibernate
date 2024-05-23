@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
+
     public UserDaoJDBCImpl() {
 
     }
@@ -19,55 +20,172 @@ public class UserDaoJDBCImpl implements UserDao {
                 "  name VARCHAR(45)," +
                 "  last_name VARCHAR(45) NULL," +
                 "  PRIMARY KEY (`id`))";
-        try (Connection connection = Util.getConnection();
-             Statement statement = connection.createStatement()) {
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = Util.getConnection();
+            statement = connection.createStatement();
+
+            connection.setAutoCommit(false);
             statement.executeUpdate(query);
-        } catch (SQLException e) {
+            connection.commit();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    e.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public void dropUsersTable() {
         String query = "DROP TABLE IF EXISTS user";
-        try (Connection connection = Util.getConnection();
-             Statement statement = connection.createStatement()) {
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = Util.getConnection();
+            statement = connection.createStatement();
+
+            connection.setAutoCommit(false);
             statement.executeUpdate(query);
-        } catch (SQLException e) {
+            connection.commit();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    e.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
         String query = "INSERT INTO user (name, last_name, age) " +
                 "VALUES (?, ?, ?)";
-        try (Connection connection = Util.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = Util.getConnection();
+            statement = connection.prepareStatement(query);
+
+            connection.setAutoCommit(false);
             statement.setString(1, name);
             statement.setString(2, lastName);
             statement.setString(3, String.valueOf(age));
             statement.executeUpdate();
             System.out.println("User с именем - " + name + " добавлен в базу данных");
-        } catch (SQLException e) {
+            connection.commit();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    e.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public void removeUserById(long id) {
         String query = "DELETE FROM user WHERE id = ?";
-        try (Connection connection = Util.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = Util.getConnection();
+            statement = connection.prepareStatement(query);
+
+            connection.setAutoCommit(false);
             statement.setLong(1, id);
             statement.executeUpdate();
-        } catch (SQLException e) {
+            connection.commit();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    e.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         String query = "SELECT * FROM user";
-        try (Connection connection = Util.getConnection();
-             Statement statement = connection.createStatement()) {
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = Util.getConnection();
+            statement = connection.createStatement();
+
+            connection.setAutoCommit(false);
             ResultSet rs = statement.executeQuery(query);
             while (rs.next()) {
                 User user = new User();
@@ -77,19 +195,70 @@ public class UserDaoJDBCImpl implements UserDao {
                 user.setAge(rs.getByte("age"));
                 userList.add(user);
             }
-        } catch (SQLException e) {
+            connection.commit();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    e.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return userList;
     }
 
     public void cleanUsersTable() {
         String query = "TRUNCATE TABLE user";
-        try (Connection connection = Util.getConnection();
-             Statement statement = connection.createStatement()) {
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = Util.getConnection();
+            statement = connection.createStatement();
+
+            connection.setAutoCommit(false);
             statement.executeUpdate(query);
-        } catch (SQLException e) {
+            connection.commit();
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    e.printStackTrace();
+                }
+            }
             e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
